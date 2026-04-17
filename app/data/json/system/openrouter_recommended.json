@@ -1,0 +1,20 @@
+{
+  "_comment": "OpenRouter 推奨モデル管理。ユーザーは data/json/user/openrouter_recommended.json で上書き可能。",
+  "_updated": "2026-04-18: 楽天AI廃止・Llama 4登場に伴い更新",
+  "epl_picks": [
+    {"id": "meta-llama/llama-4-maverick",    "icon": "🔥", "note": "Meta最新 Llama 4"},
+    {"id": "qwen/qwen3.6-plus",              "icon": "🔥", "note": "Alibaba最新"},
+    {"id": "deepseek/deepseek-v3.2",         "icon": "🔥", "note": "激安・高性能"},
+    {"id": "mistralai/ministral-14b-2512",   "icon": "🔥", "note": "欧州Mistral"},
+    {"id": "moonshotai/kimi-k2.5",           "icon": "🔥", "note": "Moonshot最新"}
+  ],
+  "hot": [
+    {"id": "x-ai/grok-4.20",                 "icon": "⚡", "note": "xAI最新"},
+    {"id": "moonshotai/kimi-k2-thinking",    "icon": "⚡", "note": "Kimi推論モデル"}
+  ],
+  "auto_detect": {
+    "free_suffix": ":free",
+    "free_icon": "🆓"
+  },
+  "exclude_keywords": ["image", "audio", "tts", "dall-e", "whisper", "embedding", "moderation", "transcribe", "guard"]
+}

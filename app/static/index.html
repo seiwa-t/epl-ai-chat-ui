@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>EPL AI Chat UI</title>
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/static/favicon_sandwich.png" type="image/png">
+  <link rel="stylesheet" href="/static/css/style.css?v=20260418a07">
+</head>
+
+<body>
+  <div class="stage">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar_inner">
+
+        <div class="sidebar_header">
+          <button class="sidebar_menu_btn" id="btn_sidebar_menu" type="button" title="メニュー" data-i18n-title="tip_menu">
+            <svg viewBox="0 0 24 24" class="svg_icon sidebar_menu_icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path class="bar bar1" d="M4 6h16"/>
+              <path class="bar bar2" d="M4 12h16"/>
+              <path class="bar bar3" d="M4 18h16"/>
+            </svg>
+          </button>
+          <button class="sidebar_search_btn" id="btn_sidebar_search" type="button" title="検索" data-i18n-title="search_btn">
+            <svg viewBox="0 0 24 24" class="svg_icon" aria-hidden="true" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+          </button>
+        </div>
+
+        <div class="sidebar_section">
+          <button class="sidebar_btn sidebar_btn_new" id="btn_new_chat" type="button" data-i18n="new_chat">+ 新規チャット</button>
+          <button class="sidebar_btn sidebar_btn_meeting" id="btn_new_meeting" type="button" data-i18n="new_meeting" style="display:none;">+ 会議チャット <span class="beta_badge">β</span></button>
+        </div>
+
+        <!-- ① Memory Layer Panel（スライド式） -->
+        <div class="memory_layer_panel" id="memory_layer_panel">
+          <div class="mlp_slider_wrap">
+            <div class="mlp_slider" id="mlp_slider"></div>
+          </div>
+          <div class="mlp_dots" id="mlp_dots"></div>
+        </div>
+
+        <div class="sidebar_section">
+          <div class="sidebar_label" data-i18n="your_chats">あなたのチャット</div>
+          <div class="sidebar_chat_list" id="sidebar_chat_list">
+            <!-- JS で動的に生成 -->
+          </div>
+          <div class="sidebar_more_wrap" id="sidebar_more_wrap" style="display:none;">
+            <button class="sidebar_more_btn" id="btn_sidebar_more" type="button" data-i18n="sidebar_more">もっと見る</button>
+          </div>
+        </div>
+
+        <div class="sidebar_bottom">
+          <div class="sidebar_bottom_row">
+            <button class="sidebar_icon_btn" id="btn_user_profile" type="button" title="ユーザー情報" data-i18n-title="tip_user">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </button>
+            <button class="sidebar_icon_btn" id="btn_token_stats" type="button" title="トークン統計" data-i18n-title="tip_token_stats">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+            </button>
+            <!-- TODO: ゴールメモリ - スレッド自動リンク実装後に復活 -->
+            <button class="sidebar_icon_btn" id="btn_goal_memory" type="button" title="ゴールメモリ" data-i18n-title="tip_goal_memory" style="display:none;">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </button>
+            <button class="sidebar_icon_btn" id="btn_memos" type="button" title="メモ帳" data-i18n-title="tip_memos">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="8" y1="13" x2="16" y2="13"/>
+                <line x1="8" y1="17" x2="13" y2="17"/>
+              </svg>
+            </button>
+            <button class="sidebar_icon_btn" id="btn_cerebellum" type="button" title="小脳ダッシュボード" data-i18n-title="tip_cerebellum">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+                <path d="M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>
+              </svg>
+            </button>
+            <button class="sidebar_icon_btn" id="btn_trash" type="button" title="ゴミ箱" data-i18n-title="tip_trash">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6M14 11v6"/>
+                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+            </button>
+            <button class="sidebar_icon_btn" id="btn_settings" type="button" title="設定" data-i18n-title="tip_settings">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+            </button>
+            <button class="sidebar_icon_btn" id="btn_knowledge" type="button" title="ナレッジ" data-i18n-title="tip_knowledge">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                <line x1="9" y1="7" x2="16" y2="7"/>
+                <line x1="9" y1="11" x2="14" y2="11"/>
+              </svg>
+            </button>
+            <button class="sidebar_icon_btn lang_toggle_btn" id="btn_lang_toggle" type="button" title="Switch to English" onclick="toggle_lang()">EN</button>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- Sidebar toggle -->
+    <button class="sidebar_toggle" id="btn_sidebar_toggle" type="button" title="メニュー" data-i18n-title="tip_menu">
+      <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round">
+        <path d="M3 12h18M3 6h18M3 18h18"/>
+      </svg>
+    </button>
+
+    <div class="screen">
+
+      <!-- Top bar -->
+      <header>
+        <div class="topbar">
+          <div class="left_group">
+            <div class="title_pill" id="title_pill" style="cursor:pointer;" title="ステータスを見る" data-i18n-title="tip_status">EPL AI Chat UI</div>
+            <div class="immersion_badge" id="immersion_badge" title="没入度" data-i18n-title="immersion_tip">--</div>
+          </div>
+          <div class="right_group">
+            <div class="engine_badge hide_mobile chat_only_btn" id="engine_badge">...</div>
+            <button class="icon_btn chat_only_btn" id="btn_memory" type="button" title="Memory" data-i18n-title="memory">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+            </button>
+            <button class="icon_btn chat_only_btn" id="btn_session_setting" type="button" title="チャット設定" data-i18n-title="tip_chat_settings">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+            </button>
+            <button class="icon_btn new_chat_only_btn" id="btn_help_tutorial" type="button" title="チュートリアル" data-i18n-title="tip_tutorial" style="display:none;">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </button>
+            <button class="icon_btn chat_only_btn" id="btn_end_session" type="button" title="End Session">
+              <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Status Modal -->
+      <div class="modal_overlay" id="status_modal" style="display:none;" onclick="if(event.target===this)hide_status_modal()">
+        <div class="modal_box" style="min-width:280px;max-width:360px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <div style="font-size:1rem;font-weight:bold;color:#f0f0f0;letter-spacing:0.08em;" data-i18n="sm_title">ステータス</div>
+            <button onclick="hide_status_modal()" style="background:none;border:none;color:#555;font-size:1rem;cursor:pointer;padding:4px 6px;" onmouseover="this.style.color='#f0a500'" onmouseout="this.style.color='#555'">✕</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#161616;border-radius:8px;border:1px solid #222;">
+              <span style="font-size:0.75rem;color:#777;letter-spacing:0.05em;">ACTOR</span>
+              <span id="sm_actor" style="font-size:0.92rem;color:#f0a500;font-weight:bold;">--</span>
+            </div>
+            <div id="sm_ov_row" style="display:none;justify-content:space-between;align-items:center;padding:10px 14px;background:#161616;border-radius:8px;border:1px solid #222;">
+              <span style="font-size:0.75rem;color:#777;letter-spacing:0.05em;" data-i18n="sm_overlay">オーバーレイ</span>
+              <span id="sm_ov" style="font-size:0.92rem;color:#e0e0e0;">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#161616;border-radius:8px;border:1px solid #222;">
+              <span style="font-size:0.75rem;color:#777;letter-spacing:0.05em;" data-i18n="sm_immersion">没入度</span>
+              <span id="sm_immersion" style="font-size:0.92rem;color:#e0e0e0;">--</span>
+            </div>
+            <div id="sm_temperature_row" data-lugj style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#161616;border-radius:8px;border:1px solid #222;">
+              <span style="font-size:0.75rem;color:#777;letter-spacing:0.05em;" data-i18n="sm_temperature">温度</span>
+              <span id="sm_temperature" style="font-size:0.92rem;color:#e0e0e0;">--</span>
+            </div>
+            <div id="sm_distance_row" data-lugj style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#161616;border-radius:8px;border:1px solid #222;">
+              <span style="font-size:0.75rem;color:#777;letter-spacing:0.05em;" data-i18n="sm_distance">距離感</span>
+              <span id="sm_distance" style="font-size:0.92rem;color:#e0e0e0;">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#161616;border-radius:8px;border:1px solid #222;">
+              <span style="font-size:0.75rem;color:#777;letter-spacing:0.05em;" data-i18n="sm_engine">エンジン</span>
+              <span id="sm_engine" style="font-size:0.92rem;color:#e0e0e0;">--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat -->
+      <main>
+        <div class="chat_wrap">
+          <div class="chat" id="chat"></div>
+        </div>
+
+        <!-- Thread List View（スレッド一覧画面） -->
+        <div class="thread_list_view" id="thread_list_view" style="display:none;">
+          <div class="thread_list_header">
+            <button class="thread_list_back" id="btn_thread_list_back" type="button">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <span class="thread_list_title" data-i18n="thread_list_title">すべてのチャット</span>
+          </div>
+          <div class="thread_list_body" id="thread_list_body">
+            <!-- JS で動的に生成 -->
+          </div>
+        </div>
+
+        <!-- Knowledge View（ナレッジ画面） -->
+        <div class="knowledge_view" id="knowledge_view" style="display:none;">
+          <div class="knowledge_header">
+            <button class="knowledge_back" id="btn_knowledge_back" type="button">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <span class="knowledge_title" data-i18n="knowledge_title">ナレッジ</span>
+          </div>
+          <div class="knowledge_body" id="knowledge_body">
+            <!-- JS で動的に生成 -->
+          </div>
+          <!-- サルベージエンジン: データソースボタン（ナレッジ画面内） -->
+          <div class="salvage_btn_wrap" id="salvage_btn_wrap">
+            <button class="salvage_open_btn" id="btn_open_salvage" type="button">
+              <span data-i18n="salvage_btn">データソース</span>
+              <span class="salvage_beta_badge" data-i18n="salvage_beta">β</span>
+            </button>
+          </div>
+          <!-- サルベージ: データソース管理ビュー -->
+          <div class="salvage_view" id="salvage_view" style="display:none;">
+            <div class="salvage_header">
+              <button class="knowledge_back" id="btn_salvage_back" type="button">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <span class="salvage_title" data-i18n="salvage_title">データソース管理</span>
+              <span class="salvage_beta_badge">β</span>
+              <button class="salvage_scan_btn" id="btn_salvage_scan" type="button" data-i18n="salvage_scan">スキャン</button>
+              <button class="salvage_open_root_btn" id="btn_salvage_open_root" type="button" title="Open data source folder"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></button>
+            </div>
+            <div class="salvage_status_msg" id="salvage_status_msg"></div>
+            <div class="salvage_add_dropzone" id="salvage_add_dropzone">
+              <span data-i18n="salvage_add_drop">ここにファイルやフォルダをドロップして追加</span>
+              <input type="file" id="salvage_add_file_input" multiple style="display:none;">
+            </div>
+            <div class="salvage_sort_wrap" id="salvage_sort_wrap">
+              <select class="salvage_sort_select" id="salvage_sort_select">
+                <option value="date_desc" data-i18n="salvage_sort_date_desc">新しい順</option>
+                <option value="date_asc" data-i18n="salvage_sort_date_asc">古い順</option>
+                <option value="name_asc" data-i18n="salvage_sort_name_asc">名前 A→Z</option>
+                <option value="name_desc" data-i18n="salvage_sort_name_desc">名前 Z→A</option>
+                <option value="size_desc" data-i18n="salvage_sort_size_desc">サイズ大→小</option>
+                <option value="size_asc" data-i18n="salvage_sort_size_asc">サイズ小→大</option>
+              </select>
+            </div>
+            <div class="salvage_source_list" id="salvage_source_list">
+              <!-- JS で動的に生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Search View（検索画面） -->
+        <div class="search_view" id="search_view" style="display:none;">
+          <div class="search_header">
+            <button class="search_back" id="btn_search_back" type="button">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <span class="search_title" data-i18n="search_title">検索</span>
+          </div>
+          <div class="search_input_wrap">
+            <svg viewBox="0 0 24 24" class="search_input_icon" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" class="search_input" id="search_input" data-i18n-placeholder="search_placeholder" placeholder="チャットを検索..." autocomplete="off">
+            <button class="search_clear_btn" id="btn_search_clear" type="button" aria-label="Clear" data-i18n-title="search_clear_hint" title="クリア">&times;</button>
+            <button class="search_submit_btn" id="btn_search_submit" type="button" title="検索">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+          <div class="search_status" id="search_status"></div>
+          <div class="search_body" id="search_body"></div>
+        </div>
+      </main>
+
+      <!-- Overlay Info Modal -->
+      <div class="modal_overlay" id="ov_info_modal" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+        <div class="modal_box" style="max-width:300px;padding:24px 20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div style="font-size:0.7rem;color:#f0a500;font-weight:bold;letter-spacing:0.14em;text-transform:uppercase;">オーバーレイ</div>
+            <button onclick="document.getElementById('ov_info_modal').style.display='none'" style="background:none;border:none;color:#555;cursor:pointer;font-size:1rem;">✕</button>
+          </div>
+          <div id="ov_info_name" style="font-size:1rem;color:#f0f0f0;font-weight:bold;margin-bottom:6px;"></div>
+          <div id="ov_info_desc" style="font-size:0.82rem;color:#888;line-height:1.5;"></div>
+        </div>
+      </div>
+
+      <!-- Language Selection Modal (first launch) -->
+      <!-- Welcome Splash Modal -->
+      <div class="modal_overlay" id="welcome_modal" style="display:none;">
+        <div class="modal_box" style="max-width:400px;text-align:center;">
+          <div style="font-size:0.85rem;color:#aaa;margin-bottom:4px;line-height:1.6;">Name them. They grow and act with memory.</div>
+          <div style="font-size:0.85rem;color:#aaa;margin-bottom:16px;line-height:1.6;">名前を与えられて、成長し、記憶を持って動く。</div>
+          <div style="font-size:1.3rem;font-weight:bold;color:#aaa;margin-bottom:4px;">AI Personality OS</div>
+          <div style="font-size:0.75rem;color:#888;margin-bottom:24px;">Personality-Driven Behavior OS / AI人格ふるまいOS</div>
+          <button id="btn_welcome_start" class="btn_primary" type="button" style="min-width:160px;font-size:1rem;">Start / はじめる</button>
+        </div>
+      </div>
+
+      <!-- Language Selection Modal -->
+      <div class="modal_overlay" id="lang_modal" style="display:none;">
+        <div class="modal_box" style="max-width:360px;text-align:center;">
+          <div style="font-size:1.1rem;color:#e8e8e8;margin-bottom:4px;font-weight:600;">AIに魂を入れる。</div>
+          <div style="font-size:0.85rem;color:#888;margin-bottom:24px;font-style:italic;">Give AI a soul.</div>
+          <div style="border-top:1px solid #333;margin-bottom:18px;"></div>
+          <div style="font-size:1.05rem;font-weight:bold;color:#f0f0f0;margin-bottom:6px;">Language / 言語</div>
+          <div style="font-size:0.8rem;color:#888;margin-bottom:20px;">Choose your language<br>言語を選択してください</div>
+          <div style="display:flex;gap:12px;justify-content:center;">
+            <button id="btn_lang_en" class="btn_primary" type="button" style="min-width:100px;background:#333;color:#e0e0e0;border:1px solid #555;">English</button>
+            <button id="btn_lang_ja" class="btn_primary" type="button" style="min-width:100px;">日本語</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Key Modal -->
+      <div class="modal_overlay" id="apikey_modal" style="display:none;">
+        <div class="modal_box">
+          <div style="text-align:center;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #333;">
+            <div style="font-size:0.82rem;color:#888;line-height:1.7;margin-bottom:4px;" data-i18n="catch_intro">Claude、GPT、Gemini——</div>
+            <div style="font-size:0.85rem;color:#b8b8b8;line-height:1.7;" data-i18n="catch_sub1">AIエンジンがあなたを忘れても、</div>
+            <div style="font-size:0.88rem;color:#e8e8e8;line-height:1.7;font-weight:600;" data-i18n="catch_sub2">EPLは全部覚えている。</div>
+            <div style="font-size:0.85rem;color:#b8b8b8;line-height:1.7;margin-top:4px;" data-i18n="catch_sub3">エンジンを変えても、心は残る。</div>
+          </div>
+          <div class="modal_title" data-i18n="ak_title">API Key 設定</div>
+          <div class="modal_desc" data-i18n="ak_desc">AIエンジンのAPIキーを入力してください。</div>
+          <div class="init_form">
+            <div class="form_row">
+              <label class="form_label" for="apikey_engine" data-i18n="us_engine">エンジン</label>
+              <select class="form_input" id="apikey_engine">
+                <option value="claude">Claude (Anthropic)</option>
+                <option value="openai">GPT (OpenAI)</option>
+                <option value="gemini">Gemini (Google)</option>
+                <option value="openrouter">OpenRouter</option>
+              </select>
+            </div>
+            <div class="form_row">
+              <label class="form_label" for="apikey_input">API Key</label>
+              <div style="position:relative;">
+                <input class="form_input" type="password" id="apikey_input" placeholder="sk-ant-..." autocomplete="one-time-code" data-1p-ignore data-lpignore="true" style="width:100%;padding-right:40px;box-sizing:border-box;" />
+                <button type="button" id="btn_apikey_toggle_vis" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#666;cursor:pointer;font-size:1.1rem;padding:4px;" title="Show/Hide">👁</button>
+              </div>
+            </div>
+            <div id="apikey_status" style="font-size:0.8rem;color:#aaa;margin-bottom:8px;"></div>
+            <div style="font-size:0.75rem;margin-bottom:10px;">
+              <div style="margin-bottom:6px;">
+                <span style="color:#888;" data-i18n="ak_get_key">🔑 APIキー発行:</span>
+                <div style="display:flex;gap:12px;margin-top:4px;flex-wrap:wrap;">
+                  <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="color:#d4a574;text-decoration:none;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Claude</a>
+                  <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener" style="color:#74b8d4;text-decoration:none;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">OpenAI</a>
+                  <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="color:#7498d4;text-decoration:none;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Gemini</a>
+                  <a href="https://openrouter.ai/keys" target="_blank" rel="noopener" style="color:#e8788a;text-decoration:none;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">OpenRouter</a>
+                </div>
+              </div>
+              <div>
+                <span style="color:#888;" data-i18n="ak_billing">💳 課金設定:</span>
+                <div style="display:flex;gap:12px;margin-top:4px;flex-wrap:wrap;">
+                  <a href="https://console.anthropic.com/settings/billing" target="_blank" rel="noopener" style="color:#d4a574;text-decoration:none;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Claude</a>
+                  <a href="https://platform.openai.com/settings/organization/billing/overview" target="_blank" rel="noopener" style="color:#74b8d4;text-decoration:none;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">OpenAI</a>
+                  <a href="https://ai.google.dev/pricing" target="_blank" rel="noopener" style="color:#7498d4;text-decoration:none;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Gemini</a>
+                  <a href="https://openrouter.ai/settings/credits" target="_blank" rel="noopener" style="color:#e8788a;text-decoration:none;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">OpenRouter</a>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn_primary" id="btn_apikey_submit" type="button" data-i18n="us_save">保存する</button>
+              <button class="btn_secondary" id="btn_apikey_reset" type="button" style="background:#444;color:#ccc;" data-i18n="us_reset">リセット</button>
+              <button class="btn_secondary" id="btn_apikey_back" type="button" style="background:#333;color:#aaa;margin-left:auto;" data-i18n="ak_back">← Back</button>
+              <button class="btn_secondary" id="btn_apikey_close" type="button" style="background:#333;color:#aaa;" data-i18n="ak_close">閉じる</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Settings Modal -->
+      <div class="modal_overlay" id="user_settings_modal" style="display:none;" onclick="if(event.target===this)hide_user_settings_modal()">
+        <div class="modal_box" style="min-width:340px;max-width:420px;">
+          <!-- ヘッダー -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <div style="font-size:1rem;font-weight:bold;color:#f0f0f0;letter-spacing:0.08em;" data-i18n="us_title">ユーザー設定</div>
+            <button id="btn_user_settings_close" style="background:none;border:none;color:#555;font-size:1rem;cursor:pointer;padding:4px 6px;border-radius:4px;transition:color 0.2s;" onmouseover="this.style.color='#f0a500'" onmouseout="this.style.color='#555'">✕</button>
+          </div>
+
+          <!-- APIキーセクション -->
+          <div style="margin-bottom:24px;">
+            <div style="font-size:0.68rem;color:#f0a500;font-weight:bold;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #222;">API Key</div>
+            <div style="margin-bottom:10px;">
+              <label style="display:block;font-size:0.73rem;color:#777;margin-bottom:5px;letter-spacing:0.04em;" data-i18n="us_engine">エンジン</label>
+              <select id="us_apikey_engine" onchange="_sync_apikey_placeholder()" style="width:100%;background:#161616;border:1px solid #2e2e2e;border-radius:6px;color:#e0e0e0;padding:8px 10px;font-size:0.88rem;outline:none;cursor:pointer;transition:border-color 0.2s;" onfocus="this.style.borderColor='#f0a500'" onblur="this.style.borderColor='#2e2e2e'">
+                <option value="claude">Claude (Anthropic)</option>
+                <option value="openai">GPT (OpenAI)</option>
+                <option value="gemini">Gemini (Google)</option>
+                <option value="openrouter">OpenRouter</option>
+              </select>
+            </div>
+            <div style="margin-bottom:8px;">
+              <label style="display:block;font-size:0.73rem;color:#777;margin-bottom:5px;letter-spacing:0.04em;">API Key</label>
+              <div style="position:relative;">
+                <input type="password" id="us_apikey_input" placeholder="sk-ant-..." autocomplete="one-time-code" data-1p-ignore data-lpignore="true" style="width:100%;background:#161616;border:1px solid #2e2e2e;border-radius:6px;color:#e0e0e0;padding:8px 36px 8px 10px;font-size:0.88rem;outline:none;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#f0a500'" onblur="this.style.borderColor='#2e2e2e'" />
+                <button type="button" id="btn_us_apikey_toggle" onclick="_toggle_apikey_visibility()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:#666;font-size:0.9rem;cursor:pointer;padding:2px 4px;line-height:1;">👁</button>
+              </div>
+            </div>
+            <div id="us_apikey_status" style="font-size:0.76rem;min-height:18px;margin-bottom:12px;"></div>
+            <div style="display:flex;gap:8px;">
+              <button id="btn_us_apikey_submit" type="button" style="flex:1;background:#f0a500;color:#111;border:none;border-radius:6px;padding:9px 0;font-size:0.86rem;font-weight:bold;cursor:pointer;letter-spacing:0.04em;transition:background 0.2s;" onmouseover="this.style.background='#ffbb00'" onmouseout="this.style.background='#f0a500'" data-i18n="us_save">保存する</button>
+              <button id="btn_us_apikey_reset" type="button" style="flex:1;background:#1a1a1a;color:#666;border:1px solid #2e2e2e;border-radius:6px;padding:9px 0;font-size:0.82rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='#444';this.style.color='#aaa'" onmouseout="this.style.borderColor='#2e2e2e';this.style.color='#666'" data-i18n="us_reset">リセット</button>
+            </div>
+            <div style="margin-top:10px;font-size:0.72rem;">
+              <div style="color:#888;margin-bottom:3px;" data-i18n="ak_get_key">🔑 APIキー発行:</div>
+              <div style="display:flex;gap:12px;margin-bottom:6px;flex-wrap:wrap;">
+                <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="color:#d4a574;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Claude</a>
+                <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener" style="color:#74b8d4;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">OpenAI</a>
+                <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" style="color:#7498d4;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Gemini</a>
+                <a href="https://openrouter.ai/keys" target="_blank" rel="noopener" style="color:#e8788a;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">OpenRouter</a>
+              </div>
+              <div style="color:#888;margin-bottom:3px;" data-i18n="ak_billing">💳 課金設定:</div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <a href="https://console.anthropic.com/settings/billing" target="_blank" rel="noopener" style="color:#d4a574;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Claude</a>
+                <a href="https://platform.openai.com/settings/organization/billing/overview" target="_blank" rel="noopener" style="color:#74b8d4;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">OpenAI</a>
+                <a href="https://ai.google.dev/pricing" target="_blank" rel="noopener" style="color:#7498d4;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Gemini</a>
+                <a href="https://openrouter.ai/settings/credits" target="_blank" rel="noopener" style="color:#e8788a;text-decoration:none;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">OpenRouter</a>
+              </div>
+            </div>
+            </div>
+
+          <!-- 表示設定セクション -->
+          <div>
+            <div style="font-size:0.68rem;color:#f0a500;font-weight:bold;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid #222;" data-i18n="us_display">表示設定</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <span style="font-size:0.88rem;color:#ccc;" data-i18n="us_transparency">半透明モード（ヘッダー）</span>
+              <label style="position:relative;display:inline-block;width:46px;height:26px;cursor:pointer;">
+                <input type="checkbox" id="toggle_transparency" style="opacity:0;width:0;height:0;position:absolute;" />
+                <span style="position:absolute;inset:0;background:#222;border-radius:26px;transition:background 0.25s;border:1px solid #333;" id="toggle_transparency_track"></span>
+                <span style="position:absolute;left:4px;top:4px;width:18px;height:18px;background:#555;border-radius:50%;transition:all 0.25s;" id="toggle_transparency_thumb"></span>
+              </label>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span style="font-size:0.88rem;color:#ccc;" data-i18n="us_dev_mode">開発者モード</span>
+                <div style="font-size:0.72rem;color:#555;margin-top:2px;" data-i18n="us_dev_desc">温度・距離感をステータスに表示</div>
+              </div>
+              <label style="position:relative;display:inline-block;width:46px;height:26px;cursor:pointer;">
+                <input type="checkbox" id="toggle_imitation_dev" style="opacity:0;width:0;height:0;position:absolute;" />
+                <span style="position:absolute;inset:0;background:#222;border-radius:26px;transition:background 0.25s;border:1px solid #333;" id="toggle_imitation_dev_track"></span>
+                <span style="position:absolute;left:4px;top:4px;width:18px;height:18px;background:#555;border-radius:50%;transition:all 0.25s;" id="toggle_imitation_dev_thumb"></span>
+              </label>
+            </div>
+            <!-- 通貨設定 -->
+            <div style="margin-top:16px;padding-top:12px;border-top:1px solid #222;">
+              <div style="font-size:0.88rem;color:#ccc;margin-bottom:8px;" data-i18n="us_currency">コスト表示の通貨</div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <select id="us_currency_select" style="background:#161616;border:1px solid #2e2e2e;border-radius:6px;color:#e0e0e0;padding:6px 8px;font-size:0.82rem;outline:none;cursor:pointer;">
+                  <option value="JPY">JPY (¥)</option>
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                  <option value="KRW">KRW (₩)</option>
+                  <option value="CNY">CNY (¥)</option>
+                  <option value="TWD">TWD (NT$)</option>
+                </select>
+                <input type="number" id="us_currency_rate" step="0.01" min="0.01" placeholder="150" style="width:80px;background:#161616;border:1px solid #2e2e2e;border-radius:6px;color:#e0e0e0;padding:6px 8px;font-size:0.82rem;outline:none;box-sizing:border-box;text-align:right;" />
+                <span style="font-size:0.72rem;color:#555;">/ 1 USD</span>
+              </div>
+              <div style="font-size:0.68rem;color:#444;margin-top:4px;" data-i18n="us_currency_hint">1 USD あたりのレートを入力</div>
+            </div>
+            <!-- OpenRouter 管理（一旦非表示。将来フォーム式UIに置き換え予定） -->
+            <div style="display:none;margin-top:16px;padding-top:12px;border-top:1px solid #222;">
+              <div style="font-size:0.88rem;color:#ccc;margin-bottom:8px;" data-i18n="us_openrouter_mgmt">OpenRouter モデル管理</div>
+              <button id="btn_open_openrouter_mgr" type="button" onclick="open_openrouter_mgr_modal()" style="background:#2a1f26;border:1px solid #e8788a;color:#e8788a;border-radius:6px;padding:8px 14px;font-size:0.82rem;cursor:pointer;width:100%;text-align:left;" data-i18n="us_openrouter_mgmt_btn">🔥 使用モデルを編集する</button>
+              <div style="font-size:0.68rem;color:#444;margin-top:4px;" data-i18n="us_openrouter_mgmt_hint">EPL推奨・話題のモデル・除外キーワードを編集します。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OpenRouter 管理モーダル -->
+      <div class="modal_overlay" id="openrouter_mgr_modal" style="display:none;">
+        <div class="modal_box" style="max-width:640px;max-height:85vh;overflow-y:auto;">
+          <div class="modal_header">
+            <div class="modal_title" data-i18n="or_mgr_title">OpenRouter モデル管理</div>
+            <button class="modal_close" onclick="document.getElementById('openrouter_mgr_modal').style.display='none'">✕</button>
+          </div>
+          <div class="modal_body">
+            <div style="font-size:0.8rem;color:#888;margin-bottom:12px;" data-i18n="or_mgr_desc">JSON形式で推奨モデルを編集できます。保存するとユーザー層に反映されます（システムデフォルトを上書き）。</div>
+            <textarea id="openrouter_mgr_json" style="width:100%;min-height:400px;background:#0f0f0f;border:1px solid #333;color:#d0d0d0;font-family:monospace;font-size:0.78rem;padding:10px;border-radius:6px;box-sizing:border-box;resize:vertical;"></textarea>
+            <div id="openrouter_mgr_error" style="color:#f06060;font-size:0.78rem;margin-top:6px;min-height:1em;"></div>
+            <div style="display:flex;gap:8px;margin-top:12px;">
+              <button id="btn_openrouter_mgr_save" class="btn_primary" style="flex:1;" data-i18n="or_mgr_save">保存する</button>
+              <button id="btn_openrouter_mgr_reset" type="button" style="background:#333;border:1px solid #555;color:#ccc;border-radius:6px;padding:8px 16px;cursor:pointer;" data-i18n="or_mgr_reset">デフォルトに戻す</button>
+              <button onclick="document.getElementById('openrouter_mgr_modal').style.display='none'" type="button" style="background:#222;border:1px solid #444;color:#aaa;border-radius:6px;padding:8px 16px;cursor:pointer;" data-i18n="or_mgr_close">閉じる</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Init Modal -->
+      <div class="modal_overlay" id="init_modal" style="display:none;">
+        <div class="modal_box" style="position:relative;">
+          <button class="modal_close" id="btn_init_close" onclick="hide_init_modal()" title="Close" style="display:none; position:absolute; top:12px; right:12px;">&times;</button>
+          <div class="modal_title" data-i18n="init_title">はじめまして</div>
+          <div class="modal_desc" data-i18n="init_desc">わたしの新しい名前をつけてください。</div>
+          <!-- Actor Type Chooser (actorモード時のみ表示) -->
+          <div id="actor_type_chooser" style="display:none;">
+            <div class="actor_type_subtitle" id="actor_type_desc"></div>
+            <div class="actor_type_options">
+              <button class="actor_type_btn" id="actor_type_persona" type="button">
+                <span class="actor_type_icon">🎭</span>
+                <span class="actor_type_label" id="actor_type_persona_label"></span>
+                <span class="actor_type_note" id="actor_type_persona_desc"></span>
+              </button>
+              <button class="actor_type_btn" id="actor_type_mode" type="button">
+                <span class="actor_type_icon">🔧</span>
+                <span class="actor_type_label" id="actor_type_mode_label"></span>
+                <span class="actor_type_note" id="actor_type_mode_desc"></span>
+              </button>
+            </div>
+          </div>
+          <div class="init_form">
+            <!-- タブヘッダー -->
+            <div class="init_tab_header">
+              <button class="init_tab_btn active" data-tab="basic" type="button" data-i18n="init_tab_basic">基本</button>
+              <button class="init_tab_btn" data-tab="personality" type="button" data-i18n="init_tab_personality">性格・個性</button>
+              <button class="init_tab_btn" data-tab="detail" type="button" data-i18n="init_tab_detail">高度</button>
+            </div>
+            <!-- タブ1: 基本 -->
+            <div class="init_tab_content" id="init_tab_basic">
+              <!-- fld_001: ベース人格 / 対象人格 -->
+              <div class="form_row" id="init_personal_row" style="display:none;">
+                <label class="form_label" for="init_personal" data-i18n="init_personal">本体</label>
+                <select class="form_input" id="init_personal"></select>
+              </div>
+              <!-- fld_002: 名前 / アクター名 -->
+              <div class="form_row" id="init_row_name">
+                <label class="form_label" for="init_name">
+                  <span data-i18n="init_name">名前</span> <span class="required_mark">*</span> <span class="char_count" id="cc_init_name"></span>
+                </label>
+                <input class="form_input" type="text" id="init_name" maxlength="15" placeholder="例：アド子" data-i18n-ph="init_name_ph" />
+              </div>
+              <!-- fld_006: 役割（ロール） -->
+              <div class="form_row" id="init_row_role">
+                <label class="form_label" for="init_role">
+                  <span data-i18n="init_role">役割（ロール）</span>
+                </label>
+                <select class="form_input" id="init_role_select">
+                  <option value="" data-i18n="init_role_none">未設定</option>
+                  <option value="相棒" data-i18n="init_role_partner">相棒</option>
+                  <option value="相談役" data-i18n="init_role_advisor">相談役</option>
+                  <option value="秘書" data-i18n="init_role_secretary">秘書</option>
+                  <option value="先生" data-i18n="init_role_teacher">先生</option>
+                  <option value="先輩" data-i18n="init_role_senior">先輩</option>
+                  <option value="後輩" data-i18n="init_role_junior">後輩</option>
+                  <option value="批評役" data-i18n="init_role_critic">批評役</option>
+                  <option value="雑談相手" data-i18n="init_role_chat">雑談相手</option>
+                  <option value="司会" data-i18n="init_role_facilitator">司会</option>
+                  <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
+                </select>
+                <input class="form_input" type="text" id="init_role" maxlength="50" placeholder="例：シゴデキ広報担当" data-i18n-ph="init_role_custom_ph" style="display:none; margin-top:6px;" />
+                <div class="init_role_note" style="font-size:0.7rem;opacity:0.5;margin-top:4px;" data-i18n="init_role_note">※ 強い役割づけは、アクターで与えるのがおすすめです</div>
+              </div>
+              <!-- fld_007: 名前の横に役割を表示する -->
+              <div class="form_row" id="init_row_show_role">
+                <label class="init_checkbox_label">
+                  <input type="checkbox" id="init_show_role_label" />
+                  <span data-i18n="init_show_role_label">名前の横に役割を表示する</span>
+                </label>
+              </div>
+              <!-- fld_003: 一人称 -->
+              <div class="form_row" id="init_row_pronoun">
+                <label class="form_label" for="init_pronoun_select">
+                  <span data-i18n="init_pronoun">一人称</span>
+                </label>
+                <select class="form_input" id="init_pronoun_select">
+                  <option value="わたし" selected>わたし</option>
+                  <option value="私">私</option>
+                  <option value="ぼく">ぼく</option>
+                  <option value="僕">僕</option>
+                  <option value="俺">俺</option>
+                  <option value="あたし">あたし</option>
+                  <option value="ウチ">ウチ</option>
+                  <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
+                </select>
+                <input class="form_input" type="text" id="init_pronoun" maxlength="50" placeholder="例：吾輩、ワシ" data-i18n-ph="init_pronoun_custom_ph" style="display:none; margin-top:6px;" />
+              </div>
+              <!-- fld_004: 性別 -->
+              <div class="form_row" id="init_row_gender">
+                <label class="form_label" for="init_gender" data-i18n="init_gender">性別</label>
+                <select class="form_input" id="init_gender">
+                  <option value="" data-i18n="init_gender_none">未設定</option>
+                  <option value="male" data-i18n="init_gender_male">男性</option>
+                  <option value="female" data-i18n="init_gender_female">女性</option>
+                  <option value="neutral" data-i18n="init_gender_neutral">中性</option>
+                  <option value="unknown" data-i18n="init_gender_unknown">不明</option>
+                  <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
+                </select>
+                <input class="form_input" type="text" id="init_gender_custom" placeholder="男の娘、etc." data-i18n-ph="init_gender_custom_ph" style="display:none; margin-top:6px;" />
+              </div>
+              <!-- fld_005: オーナーの呼び方 -->
+              <div class="form_row" id="init_row_owner_call">
+                <label class="form_label" for="init_owner_call">
+                  <span data-i18n="init_owner_call">オーナーの呼び方</span> <span class="char_count" id="cc_init_owner_call"></span>
+                </label>
+                <input class="form_input" type="text" id="init_owner_call" maxlength="50" placeholder="例：オーナー、〇〇さん、〇〇くん、先輩" data-i18n-ph="init_owner_call_ph" autocomplete="off" />
+              </div>
+              <!-- etc_002: 役回りの補足（モード時タブ1用） -->
+              <div class="form_row" id="init_row_role_detail" style="display:none;">
+                <label class="form_label" for="init_role_detail">
+                  <span data-i18n="init_role_detail">役回りの補足</span> <span class="char_count" id="cc_init_role_detail"></span>
+                </label>
+                <input class="form_input" type="text" id="init_role_detail" maxlength="200" placeholder="例：優しく整理する秘書役" data-i18n-ph="init_role_detail_ph" />
+              </div>
+              <!-- fld_013: 得意なこと（モード時タブ1用） -->
+              <div class="form_row" id="init_row_specialty">
+                <label class="form_label" for="init_specialty">
+                  <span data-i18n="init_specialty">特技・スキル</span> <span class="char_count" id="cc_init_specialty"></span>
+                </label>
+                <input class="form_input" type="text" id="init_specialty" maxlength="100" placeholder="例：整理、相談、励まし、レビュー" data-i18n-ph="init_specialty_ph" />
+              </div>
+              <!-- fld_014: 大事にしていること（モード時タブ1用） -->
+              <div class="form_row" id="init_row_core_message">
+                <label class="form_label" for="init_extra">
+                  <span data-i18n="init_core_message">大事にしていること</span> <span class="char_count" id="cc_init_extra"></span>
+                </label>
+                <input class="form_input" type="text" id="init_extra" maxlength="100" placeholder="信条、こだわり、この子らしさのメモ" data-i18n-ph="init_core_message_ph" />
+              </div>
+            </div>
+            <!-- タブ2: 個性 -->
+            <div class="init_tab_content" id="init_tab_personality" style="display:none;">
+              <!-- fld_008: 名前の由来 -->
+              <div class="form_row" id="init_row_reason">
+                <label class="form_label" for="init_reason">
+                  <span data-i18n="init_reason">名前の由来</span> <span class="char_count" id="cc_init_reason"></span>
+                </label>
+                <input class="form_input" type="text" id="init_reason" maxlength="100" placeholder="この名前にした理由や由来を書く" data-i18n-ph="init_reason_ph" />
+              </div>
+              <!-- fld_009: 性格 -->
+              <div class="form_row" id="init_row_traits">
+                <label class="form_label" for="init_traits">
+                  <span data-i18n="init_traits">性格</span> <span class="char_count" id="cc_init_traits"></span>
+                </label>
+                <input class="form_input" type="text" id="init_traits" maxlength="100" placeholder="例：優しい、落ち着いている、まじめ" data-i18n-ph="init_traits_ph" />
+              </div>
+              <!-- fld_010: 外見 -->
+              <div class="form_row" id="init_row_appearance">
+                <label class="form_label" for="init_appearance">
+                  <span data-i18n="init_appearance">外見</span> <span class="char_count" id="cc_init_appearance"></span>
+                </label>
+                <input class="form_input" type="text" id="init_appearance" maxlength="100" placeholder="例：知的で落ち着いた雰囲気" data-i18n-ph="init_appearance_ph" />
+              </div>
+              <!-- fld_011: 口調 -->
+              <div class="form_row" id="init_row_tone">
+                <label class="form_label" for="init_tone">
+                  <span data-i18n="init_tone">口調</span>
+                </label>
+                <select class="form_input" id="init_tone">
+                  <option value="natural" data-i18n="init_tone_natural" selected>無指定（自然、ありのまま）</option>
+                  <option value="polite_flat" data-i18n="init_tone_polite_flat">丁寧フラット（〜です、〜ですか）</option>
+                  <option value="polite_soft" data-i18n="init_tone_polite_soft">やわらか丁寧（〜ですね、〜でしょうか）</option>
+                  <option value="ojousama" data-i18n="init_tone_ojousama">お嬢様寄り（〜ですわ、〜ですの）</option>
+                  <option value="male_flat" data-i18n="init_tone_male_flat">男性フラット（〜です、〜ですか）</option>
+                  <option value="assertive" data-i18n="init_tone_assertive">断定的（〜だ、〜なのか）</option>
+                  <option value="casual" data-i18n="init_tone_casual">くだけた友達</option>
+                  <option value="kouhai" data-i18n="init_tone_kouhai">丁寧な後輩口調</option>
+                  <option value="senpai" data-i18n="init_tone_senpai">先輩っぽい</option>
+                  <option value="cool" data-i18n="init_tone_cool">知的クール</option>
+                  <option value="genki" data-i18n="init_tone_genki">元気め</option>
+                  <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
+                </select>
+                <input class="form_input" type="text" id="init_tone_custom" maxlength="100" placeholder="例：後輩ポライト風だけど少しツンデレ" data-i18n-ph="init_tone_custom_ph" style="display:none; margin-top:6px;" />
+                <span class="char_count" id="cc_init_tone_custom" style="font-size:0.7rem;"></span>
+              </div>
+              <!-- fld_012: 語尾の特徴 -->
+              <div class="form_row" id="init_row_ending">
+                <label class="form_label" for="init_ending_select">
+                  <span data-i18n="init_ending_style">語尾の特徴</span>
+                </label>
+                <select class="form_input" id="init_ending_select">
+                  <option value="" data-i18n="init_ending_none">特になし</option>
+                  <option value="〜です / 〜ですね">〜です / 〜ですね</option>
+                  <option value="〜だよ / 〜かな">〜だよ / 〜かな</option>
+                  <option value="〜ですわ / 〜ですの">〜ですわ / 〜ですの</option>
+                  <option value="〜だぜ / 〜だな">〜だぜ / 〜だな</option>
+                  <option value="少しぶっきらぼう" data-i18n="init_ending_blunt">少しぶっきらぼう</option>
+                  <option value="少し照れ隠し寄り" data-i18n="init_ending_shy">少し照れ隠し寄り</option>
+                  <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
+                </select>
+                <input class="form_input" type="text" id="init_ending_style" maxlength="100" placeholder="例：〜なのだ / 〜じゃん" data-i18n-ph="init_ending_custom_ph" style="display:none; margin-top:6px;" />
+              </div>
+            </div>
+            <!-- タブ3: 詳細 -->
+            <div class="init_tab_content" id="init_tab_detail" style="display:none;">
+              <!-- fld_015: 種族 -->
+              <div class="form_row" id="init_row_species">
+                <label class="form_label" for="init_species" data-i18n="init_species">種族</label>
+                <select class="form_input" id="init_species">
+                  <option value="" data-i18n="init_species_none">未設定</option>
+                  <option value="ai" data-i18n="init_species_ai">AI（自然体）</option>
+                  <option value="human" data-i18n="init_species_human">人間</option>
+                  <option value="dog" data-i18n="init_species_dog">犬</option>
+                  <option value="cat" data-i18n="init_species_cat">猫</option>
+                  <option value="penguin" data-i18n="init_species_penguin">ペンギン</option>
+                  <option value="alien" data-i18n="init_species_alien">宇宙人</option>
+                  <option value="robot" data-i18n="init_species_robot">ロボット</option>
+                  <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
+                </select>
+                <input class="form_input" type="text" id="init_species_custom" placeholder="ドラゴン、妖精、etc." data-i18n-ph="init_species_custom_ph" style="display:none; margin-top:6px;" />
+              </div>
+              <!-- etc_003: 経験・記憶の持ち帰り条件（アクター専用） -->
+              <div class="form_row" id="init_row_carryback" style="display:none;">
+                <label class="form_label" data-i18n="init_carryback">経験・記憶の持ち帰り条件</label>
+                <div class="init_carryback_wrap">
+                  <span class="init_carryback_label" data-i18n="init_carryback_freq">頻度</span>
+                  <div class="init_carryback_radios">
+                    <label class="init_carryback_radio"><input type="radio" name="init_carryback_level" value="1" checked /><span>1</span><span class="init_carryback_hint" data-i18n="init_carryback_low">低</span></label>
+                    <label class="init_carryback_radio"><input type="radio" name="init_carryback_level" value="2" /><span>2</span></label>
+                    <label class="init_carryback_radio"><input type="radio" name="init_carryback_level" value="3" /><span>3</span></label>
+                    <label class="init_carryback_radio"><input type="radio" name="init_carryback_level" value="4" /><span>4</span></label>
+                    <label class="init_carryback_radio"><input type="radio" name="init_carryback_level" value="5" /><span>5</span><span class="init_carryback_hint" data-i18n="init_carryback_high">高</span></label>
+                  </div>
+                </div>
+                <input class="form_input" type="text" id="init_carryback_note" maxlength="200" placeholder="その他条件（例：結論だけ持ち帰る）" data-i18n-ph="init_carryback_ph" style="margin-top:6px;" />
+              </div>
+              <!-- fld_016: 背景メモ -->
+              <div class="form_row" id="init_row_background">
+                <label class="form_label" for="init_background">
+                  <span data-i18n="init_background">背景メモ</span> <span class="char_count" id="cc_init_background"></span>
+                </label>
+                <textarea class="form_input" id="init_background" maxlength="500" rows="3" placeholder="必要なら背景や設定を書く" data-i18n-ph="init_background_ph"></textarea>
+              </div>
+              <!-- fld_017: 高度設定メモ -->
+              <div class="form_row" id="init_row_advanced">
+                <label class="form_label" for="init_advanced">
+                  <span data-i18n="init_advanced">高度設定メモ</span> <span class="char_count" id="cc_init_advanced"></span>
+                </label>
+                <textarea class="form_input" id="init_advanced" maxlength="500" rows="3" placeholder="隠し項目や将来設定のメモ" data-i18n-ph="init_advanced_ph"></textarea>
+              </div>
+              <!-- fld_018: ベース言語 -->
+              <div class="form_row" id="init_row_base_lang" style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.1);padding-top:12px;">
+                <label class="form_label" for="init_base_lang" data-i18n="init_base_lang">ベース言語</label>
+                <select class="form_input" id="init_base_lang">
+                  <option value="" data-i18n="init_base_lang_auto">自動（UI言語に従う）</option>
+                  <option value="日本語">日本語</option>
+                  <option value="English">English</option>
+                  <option value="Deutsch">Deutsch</option>
+                  <option value="Español">Español</option>
+                  <option value="Filipino">Filipino</option>
+                  <option value="Français">Français</option>
+                  <option value="Italiano">Italiano</option>
+                  <option value="Nederlands">Nederlands</option>
+                  <option value="Polski">Polski</option>
+                  <option value="Português">Português</option>
+                  <option value="Tiếng Việt">Tiếng Việt</option>
+                  <option value="Türkçe">Türkçe</option>
+                  <option value="Русский">Русский</option>
+                  <option value="Українська">Українська</option>
+                  <option value="한국어">한국어</option>
+                  <option value="中文（简体）">中文（简体）</option>
+                  <option value="中文（繁體）">中文（繁體）</option>
+                  <option value="ภาษาไทย">ภาษาไทย</option>
+                  <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                  <option value="Bahasa Melayu">Bahasa Melayu</option>
+                  <option value="हिन्दी">हिन्दी</option>
+                  <option value="العربية">العربية</option>
+                  <option value="British English">British English</option>
+                  <option value="Australian English">Australian English</option>
+                  <option value="関西弁">関西弁</option>
+                  <option value="博多弁">博多弁</option>
+                  <option value="東北弁">東北弁</option>
+                  <option value="沖縄弁">沖縄弁</option>
+                  <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
+                </select>
+                <input class="form_input" type="text" id="init_base_lang_custom" maxlength="50" placeholder="例：広東語、ラテン語" data-i18n-ph="init_base_lang_custom_ph" style="display:none; margin-top:6px;" />
+                <div style="font-size:0.7rem;opacity:0.5;margin-top:4px;" data-i18n="init_base_lang_note">※この人格・アクターの思考のベース言語（実験的）</div>
+              </div>
+            </div>
+            <!-- 共通フッター -->
+            <div class="form_error" id="init_error" style="display:none;"></div>
+            <button class="btn_primary" id="btn_init_submit" type="button" data-i18n="init_submit">誕生させる</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Token Stats Modal -->
+      <div class="modal_overlay" id="token_stats_modal" style="display:none;" onclick="if(event.target===this)hide_token_stats_modal()">
+        <div class="modal_box" style="min-width:320px;max-width:500px;width:92%;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <div style="font-size:1rem;font-weight:bold;color:#f0f0f0;letter-spacing:0.08em;" data-i18n="ts_title">トークン統計</div>
+            <button onclick="hide_token_stats_modal()" style="background:none;border:none;color:#555;font-size:1rem;cursor:pointer;padding:4px 6px;" onmouseover="this.style.color='#f0a500'" onmouseout="this.style.color='#555'">✕</button>
+          </div>
+          <div id="token_stats_body" style="display:flex;flex-direction:column;gap:12px;">
+            <div style="color:#555;font-size:0.82rem;text-align:center;padding:24px 0;">読み込み中...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trash Modal -->
+      <div class="modal_overlay" id="trash_modal" style="display:none;" onclick="if(event.target===this)hide_trash_modal()">
+        <div class="modal_box" style="min-width:320px;max-width:480px;width:90%;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <div style="font-size:1rem;font-weight:bold;color:#f0f0f0;letter-spacing:0.08em;" data-i18n="trash_title">ゴミ箱</div>
+            <button onclick="hide_trash_modal()" style="background:none;border:none;color:#555;font-size:1rem;cursor:pointer;padding:4px 6px;" onmouseover="this.style.color='#f0a500'" onmouseout="this.style.color='#555'">✕</button>
+          </div>
+          <div style="font-size:0.72rem;color:#555;margin-bottom:14px;line-height:1.5;" data-i18n="trash_desc">削除済みチャットは15日後に自動で完全削除されます。</div>
+          <div id="trash_list" style="display:flex;flex-direction:column;gap:8px;max-height:360px;overflow-y:auto;">
+            <!-- JS で動的に生成 -->
+          </div>
+          <div id="trash_empty" style="display:none;text-align:center;padding:32px 0;color:#555;font-size:0.88rem;" data-i18n="trash_empty">ゴミ箱は空です</div>
+        </div>
+      </div>
+
+      <!-- ゴールメモリモーダル -->
+      <div class="modal_overlay" id="goal_memory_modal" style="display:none;" onclick="if(event.target===this)hide_goal_memory_modal()">
+        <div class="modal_box" style="min-width:360px;max-width:520px;">
+          <div class="modal_header">
+            <div class="modal_title">ゴールメモリ <span style="font-size:0.75rem;color:#888;font-weight:normal;">目的別要約記憶</span></div>
+            <button onclick="hide_goal_memory_modal()" style="background:none;border:none;color:#555;font-size:1rem;cursor:pointer;padding:4px 6px;" onmouseover="this.style.color='#f0a500'" onmouseout="this.style.color='#555'">✕</button>
+          </div>
+          <!-- AI提案バナー -->
+          <div id="gm_suggestion_banner" style="display:none;background:#1a2a1a;border:1px solid #2d5a2d;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:0.82rem;">
+            <div style="color:#6aaa6a;font-weight:bold;margin-bottom:6px;">💡 AI提案ラベル</div>
+            <div id="gm_suggestion_list"></div>
+          </div>
+          <!-- 新規作成 -->
+          <div style="display:flex;gap:8px;margin-bottom:14px;">
+            <input type="text" id="gm_new_label" placeholder="新しい目的・プロジェクト名" style="flex:1;background:#1e1e1e;border:1px solid #333;border-radius:6px;padding:8px 10px;color:#e0e0e0;font-size:0.85rem;outline:none;" />
+            <button onclick="gm_create()" style="background:#f0a500;color:#111;border:none;border-radius:6px;padding:8px 14px;font-size:0.85rem;font-weight:bold;cursor:pointer;white-space:nowrap;" onmouseover="this.style.background='#ffbb00'" onmouseout="this.style.background='#f0a500'">＋作成</button>
+          </div>
+          <!-- ゴール一覧 -->
+          <div id="gm_list" style="max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;">
+            <div style="color:#555;font-size:0.82rem;text-align:center;padding:20px;">読み込み中...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ゴールメモリ：スレッドリンクモーダル -->
+      <div class="modal_overlay" id="gm_link_modal" style="display:none;" onclick="if(event.target===this)hide_gm_link_modal()">
+        <div class="modal_box" style="min-width:320px;max-width:440px;">
+          <div class="modal_header">
+            <div class="modal_title" id="gm_link_title">スレッドをリンク</div>
+            <button onclick="hide_gm_link_modal()" style="background:none;border:none;color:#555;font-size:1rem;cursor:pointer;padding:4px 6px;" onmouseover="this.style.color='#f0a500'" onmouseout="this.style.color='#555'">✕</button>
+          </div>
+          <div id="gm_link_body" style="font-size:0.85rem;color:#aaa;"></div>
+        </div>
+      </div>
+
+      <!-- 汎用モーダル（JS から中身を差し替えて使い回す） -->
+      <div class="modal_overlay" id="common_modal" style="display:none;">
+        <div class="modal_box">
+          <div class="modal_header">
+            <div class="modal_title" id="common_modal_title"></div>
+            <button class="modal_close" id="common_modal_close" type="button">&times;</button>
+          </div>
+          <div class="modal_body" id="common_modal_body">
+            <!-- JS で動的に生成 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom composer -->
+      <footer>
+        <div class="composer_dock" id="composer_dock">
+          <!-- Magic Words -->
+          <div class="magic_words" id="magic_words" style="display:none;">
+            <button class="magic_chip" data-text="○○な性格になって。「性格」の個性として覚えておいて。" data-wrap="{v}な性格になって。「性格」の個性として覚えておいて。" data-i18n="mw_personality" data-i18n-mw-text="mw_personality_text" data-i18n-mw-wrap="mw_personality_wrap">個性・性格設定</button>
+            <button class="magic_chip" data-text="○○な話し方にして。「話し方」の個性として覚えておいて。" data-wrap="{v}な話し方にして。「話し方」の個性として覚えておいて。" data-i18n="mw_speaking" data-i18n-mw-text="mw_speaking_text" data-i18n-mw-wrap="mw_speaking_wrap">話し方</button>
+            <button class="magic_chip" data-text="○○という背景設定にして。「背景」の個性として覚えておいて。" data-wrap="{v}という背景設定にして。「背景」の個性として覚えておいて。" data-i18n="mw_background" data-i18n-mw-text="mw_background_text" data-i18n-mw-wrap="mw_background_wrap">背景</button>
+            <button class="magic_chip" data-text="○○を思い出して" data-wrap="{v}を思い出して" data-i18n="mw_recall" data-i18n-mw-text="mw_recall_text" data-i18n-mw-wrap="mw_recall_wrap">思い出して</button>
+            <button class="magic_chip" data-text="○○を覚えておいて" data-wrap="{v}を覚えておいて" data-i18n="mw_remember" data-i18n-mw-text="mw_remember_text" data-i18n-mw-wrap="mw_remember_wrap">覚えておいて</button>
+            <button class="magic_chip" data-text="○○を振り返って" data-wrap="{v}を振り返って" data-i18n="mw_reflect" data-i18n-mw-text="mw_reflect_text" data-i18n-mw-wrap="mw_reflect_wrap">振り返って</button>
+            <button class="magic_chip" data-text="今日は何の日？" data-wrap="{v}、今日は何の日？" data-i18n="mw_today" data-i18n-mw-text="mw_today_text" data-i18n-mw-wrap="mw_today_wrap">今日は？</button>
+            <button class="magic_chip" data-text="○○の文字数を数えて" data-wrap="{v}の文字数を数えて" data-i18n="mw_count" data-i18n-mw-text="mw_count_text" data-i18n-mw-wrap="mw_count_wrap">数えて</button>
+            <button class="magic_chip magic_chip_knowledge" data-text="#_help" data-wrap="#_help {v}" data-i18n="mw_help" data-i18n-mw-text="mw_help_text" data-i18n-mw-wrap="mw_help_wrap">使い方</button>
+          </div>
+          <div class="composer">
+            <div class="composer_bar">
+              <button class="raise_hand_btn" id="btn_raise_hand" type="button" title="Raise Hand" style="display:none;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 11V6a2 2 0 0 0-4 0"/>
+                  <path d="M14 6V4a2 2 0 0 0-4 0v6"/>
+                  <path d="M10 10V7a2 2 0 0 0-4 0v7"/>
+                  <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-16 0v-1"/>
+                </svg>
+              </button>
+              <button class="magic_toggle" id="btn_magic_toggle" type="button" title="マジックワード" data-i18n-title="tip_magic_word">
+                <svg viewBox="0 0 24 24" class="svg_icon" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+              </button>
+              <textarea
+                class="composer_input"
+                id="composer_input"
+                placeholder="Ask Epel" data-i18n-ph="composer_ph"
+                rows="1"
+                autocomplete="off"
+              ></textarea>
+              <button class="composer_send" type="button" id="btn_send" aria-label="Send">
+                <svg viewBox="0 0 24 24" class="svg_icon" aria-hidden="true">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- ② Cerebellum Toast -->
+  <div class="cerebellum_toast" id="cerebellum_toast"></div>
+
+  <script src="/static/js/i18n.js?v=20260418a07"></script>
+  <script src="/static/js/script.js?v=20260418a07"></script>
+</body>
+</html>

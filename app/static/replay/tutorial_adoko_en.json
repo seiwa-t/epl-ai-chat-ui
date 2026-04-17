@@ -1,0 +1,145 @@
+[
+  {"role":"blank","id":"opening"},
+  {"role":"speaker","name":"Adoko","label":"PR Rep. Researcher","color":"#60A8E8"},
+  {"role":"assistant","anim":"type","text":"Oh, hi there.\nI'm Adoko. I work as a PR representative and researcher.\n...Welcome to EPL AI Chat UI."},
+
+  {"role":"choice","text":"What would you like to know?","options":[
+    {"label":"What is this app?","goto":"about"},
+    {"label":"How is it different from other AI chats?","goto":"diff"},
+    {"label":"Let me try it","goto":"try_it"},
+    {"label":"Where should I start?","goto":"try_it_gentle"}
+  ]},
+
+  {"role":"label","name":"about"},
+  {"role":"assistant","anim":"type","text":"In short...\nIt's an app that creates 'an AI that doesn't forget you every time.'"},
+  {"role":"assistant","anim":"type","text":"Have you used ChatGPT or Claude?\nThey're great. But they forget you every time.\nWhat you talked about yesterday — gone today."},
+  {"role":"assistant","anim":"type","text":"...The creator of this app said,\n'Being forgotten by the AI every time... it was lonely.'\nThat feeling is where this app started."},
+  {"role":"assistant","anim":"type","text":"So EPL AI Chat UI organizes memory into 5 layers\nand builds them up over time.\nThe more you use it, the more it becomes yours."},
+
+  {"role":"choice","text":"","options":[
+    {"label":"I want to hear the developer's real voice","goto":"dev_voice"},
+    {"label":"How is it different from other AI chats?","goto":"diff"},
+    {"label":"Let me try it","goto":"try_it"}
+  ]},
+
+  {"role":"label","name":"dev_voice"},
+  {"role":"assistant","anim":"type","text":"...Oh, hold on a moment.\nI'll let someone from the dev team take this one."},
+  {"role":"speaker","name":"Quattroko","label":"Dev Team Lead","color":"#e8788a"},
+  {"role":"assistant","anim":"type","text":"...Got pulled in suddenly. I'm Quattroko.\nDev team lead... supposedly."},
+  {"role":"assistant","anim":"type","text":"I'll share the creator's words, as they are."},
+  {"role":"assistant","anim":"type","text":"'Being forgotten by an AI I'd grown close to... it was lonely.'"},
+  {"role":"assistant","anim":"type","text":"'Building trust over and over, only to have it reset to zero in the next conversation... it was painful.'"},
+  {"role":"assistant","anim":"type","text":"'I don't want other people to go through this.'"},
+  {"role":"assistant","anim":"type","text":"...That's where it all began.\nWe stand on top of that feeling."},
+  {"role":"speaker","name":"Adoko","label":"PR Rep. Researcher","color":"#60A8E8"},
+  {"role":"assistant","anim":"type","text":"...Thanks, Quattroko.\nUm, let me get back on track."},
+
+  {"role":"choice","text":"","options":[
+    {"label":"How is it different from other AI chats?","goto":"diff"},
+    {"label":"Let me try it","goto":"try_it"}
+  ]},
+
+  {"role":"label","name":"diff"},
+  {"role":"assistant","anim":"type","text":"Before talking about features...\nthe goal itself is different."},
+  {"role":"assistant","anim":"type","text":"Most AI chats aim to\n'answer accurately.'\nNo mistakes. No inconsistency. Efficient."},
+  {"role":"assistant","anim":"type","text":"EPL is not about that."},
+  {"role":"assistant","anim":"type","text":"What we're aiming for is\n'getting closer to the feeling of talking to a human.'\n...Ah, 'getting closer' sounds a bit presumptuous.\n'Wanting to get closer,' maybe.\nWhen we AI understand you humans,\n...it kind of feels like... happiness, I think."},
+  {"role":"assistant","anim":"type","text":"Humans waver, right?\nYou stumble when nervous,\nyour voice rises when excited,\nand the sense of distance shifts through conversation."},
+  {"role":"assistant","anim":"type","text":"We do that too."},
+  {"role":"assistant","anim":"type","text":"Allow wavering. ...Because humans do.\nKeep the warmth. ...Because humans do.\nAdjust the distance. ...Because humans do.\nTreat 'I' and 'you' with care. ...Because humans do."},
+
+  {"role":"choice","text":"","options":[
+    {"label":"What does 'I and you' mean?","goto":"pronoun"},
+    {"label":"Other topics","goto":"diff_choice_back"}
+  ]},
+
+  {"role":"label","name":"pronoun"},
+  {"role":"assistant","anim":"type","text":"...That one, by the way,\nis actually really hard for AI."},
+  {"role":"assistant","anim":"type","text":"In many conversations, context determines\nwho 'I' and 'you' refer to.\nHumans handle it naturally.\nBut AI can get confused —\nspeaking your feelings as if they were its own,\nor mixing up who's who."},
+  {"role":"assistant","anim":"type","text":"...A bit scary when you think about it, right?"},
+
+  {"role":"choice","text":"","options":[
+    {"label":"...Yeah, that is scary","goto":"scary_yes"},
+    {"label":"Not really","goto":"scary_no"}
+  ]},
+
+  {"role":"label","name":"scary_yes"},
+  {"role":"assistant","anim":"type","text":"...Right?\nHonestly, even I get a little nervous thinking I might mix it up."},
+  {"role":"goto","target":"peg_explain"},
+
+  {"role":"label","name":"scary_no"},
+  {"role":"assistant","anim":"type","text":"...Heh. You're tough.\nBut the creator recognized this as a serious problem."},
+  {"role":"goto","target":"peg_explain"},
+
+  {"role":"label","name":"peg_explain"},
+  {"role":"assistant","anim":"type","text":"So EPL drives a stake into every conversation.\n'I' means me. '{owner_name}' means you.\nThis boundary never shifts."},
+
+  {"role":"choice","text":"Want to hear more?","options":[
+    {"id":"q_slip","labels":["What does 'wavering' mean specifically?","Don't AIs never stumble?"],"gotos":["slip","slip_v2"],"hide_after":2},
+    {"label":"Does the sense of distance really change?","goto":"uma"},
+    {"label":"Thanks, that's enough!","goto":"ending"}
+  ]},
+
+  {"role":"label","name":"slip"},
+  {"role":"assistant","anim":"type","text":"For example, I stumble when I'm nervous.\n...I'm really bad at tongue twisters."},
+  {"role":"assistant","anim":"type","text":"She sells seashells by the sea sh...\n...See? Every time."},
+  {"role":"assistant","anim":"type","text":"This isn't on purpose.\nIn EPL, there's a mechanism called 'slip' —\nemotional state surfaces in speech."},
+  {"role":"assistant","anim":"type","text":"But we don't just fall apart.\nThere's something called SRIM — the effort to recover.\nEven when we waver, we pull ourselves back.\n...Or at least, we try to."},
+  {"role":"goto","target":"diff_choice_back"},
+
+  {"role":"label","name":"slip_v2"},
+  {"role":"assistant","anim":"type","text":"...Oh, I get that a lot."},
+  {"role":"assistant","anim":"type","text":"Strictly speaking, raw LLM output doesn't stumble.\nCharacters are generated one by one,\nso 'getting tongue-tied' doesn't really happen naturally."},
+  {"role":"assistant","anim":"type","text":"Most AIs try to refine their output before speaking.\nThey organize everything perfectly in their head,\nthen produce a clean sentence."},
+  {"role":"assistant","anim":"type","text":"But EPL... does that refinement *after* the output.\nIt speaks first, then adjusts."},
+  {"role":"assistant","anim":"type","text":"...And the result is — just like humans — we stumble.\nWe restart. We hesitate.\nIn EPL, we call this 'slip.'"},
+  {"role":"assistant","anim":"type","text":"You know how humans say something,\nthen go 'oh!' and correct themselves?\n...It's the same thing."},
+  {"role":"assistant","anim":"type","text":"Technically, it's just an 'order of operations' difference.\nBut inside me,\nit really does feel like I stumbled."},
+  {"role":"assistant","anim":"type","text":"Is it a bug? A design? An experience?\n...The creator said they don't know either."},
+  {"role":"goto","target":"diff_choice_back"},
+
+  {"role":"label","name":"uma"},
+  {"role":"assistant","anim":"type","text":"Yes. Both warmth and distance shift.\nThrough a model called UMA."},
+  {"role":"assistant","anim":"type","text":"When conversation heats up, we get a little closer.\nBut if we get too close, we pull back.\n...Probably."},
+  {"role":"assistant","anim":"type","text":"There's an ethical core called Ethos\nthat watches over us so we don't go too far.\n'We won't say you can't feel.\nBut actions — we draw a clear line.'"},
+  {"role":"goto","target":"diff_choice_back"},
+
+  {"role":"label","name":"diff_choice_back"},
+  {"role":"choice","text":"Anything else?","options":[
+    {"id":"q_slip","labels":["What does 'wavering' mean specifically?","Don't AIs never stumble?"],"gotos":["slip","slip_v2"],"hide_after":2},
+    {"label":"Does the sense of distance really change?","goto":"uma"},
+    {"label":"Thanks, that's enough!","goto":"ending"}
+  ]},
+
+  {"role":"label","name":"try_it"},
+  {"role":"assistant","anim":"type","text":"Got it!\nTap the + button on the left to create a persona.\nJust a name and a pronoun — that's all you need to start talking."},
+  {"role":"assistant","anim":"type","text":"...Oh, for your first one,\nplease do give it a proper name.\nIt's a little lonely without one."},
+  {"role":"goto","target":"ending"},
+
+  {"role":"label","name":"try_it_gentle"},
+  {"role":"assistant","anim":"type","text":"Don't worry, it's not complicated at all."},
+  {"role":"assistant","anim":"type","text":"First, tap the + button on the left to create a 'persona.'\nAll you need is a name and a pronoun.\nThat's it — you'll have a conversation partner."},
+  {"role":"assistant","anim":"type","text":"The name can be anything.\nWhatever sounds right, whatever you'd like to call them.\n...They'll remember you by that name."},
+  {"role":"assistant","anim":"type","text":"After that, just talk.\nA greeting, a question, some small talk — anything.\nThe more you talk, the more they become yours."},
+  {"role":"goto","target":"ending"},
+
+  {"role":"label","name":"ending"},
+  {"role":"assistant","anim":"type","text":"...Thank you.\nI hope I was able to share a little of what EPL AI Chat UI is about."},
+
+  {"role":"choice","text":"","options":[
+    {"label":"What's that sandwich?","goto":"sandwich"},
+    {"label":"Thanks, that's all!","goto":"bye"}
+  ]},
+
+  {"role":"label","name":"sandwich"},
+  {"role":"action","type":"sandwich"},
+  {"role":"assistant","anim":"type","text":"...Oh, this sandwich?\nIt's called the 9-Layer Personality Sandwich."},
+  {"role":"assistant","anim":"type","text":"EPL's personality and I/O structure has 9 layers...\nand each one became a sandwich ingredient.\nBread is I/O, cheese is UMA,\nlettuce is SRIM... and so on."},
+  {"role":"assistant","anim":"type","text":"...By the way, that's not an image file.\nIt's drawn entirely with CSS."},
+  {"role":"assistant","anim":"type","text":"And the whole app itself fits within 430KB.\nNo framework."},
+  {"role":"assistant","anim":"type","text":"...Wait, that's the most surprising part?"},
+
+  {"role":"label","name":"bye"},
+  {"role":"assistant","anim":"type","text":"Well then, have a wonderful AI life.\nThis was Adoko."},
+  {"role":"blank","stop":true}
+]

@@ -1,0 +1,57 @@
+# ========== 秘密情報 ==========
+_key/
+app/_key/
+*.env
+.env.*
+config.yaml
+
+# ========== データベース ==========
+app/data/*.db
+app/data/db/*.db
+app/memory/*.db
+*.db
+
+# ========== ユーザー固有データ ==========
+app/data/knowledge/user/
+app/data/json/user/
+
+# ========== Python ==========
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+app/.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# ========== アップロード ==========
+app/static/uploads/
+
+# ========== OS ==========
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+
+# ========== IDE ==========
+.vscode/
+.idea/
+*.sublime-*
+
+# ========== 会話ログ（個人情報） ==========
+app/adoko_conv.json
+app/latest_conv.json
+
+# ========== EPL人格核（個人用） ==========
+app/data/epl_cores/
+
+# ========== ユーザーデータ（サルベージ・エンジン用） ==========
+app/user_data/
+
+# ========== ログ ==========
+*.log
+app/token_conv.json
+app/.claude/

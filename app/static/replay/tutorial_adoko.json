@@ -1,0 +1,153 @@
+[
+  {"role":"blank","id":"opening"},
+  {"role":"speaker","name":"アド子","label":"広報担当研究員","color":"#60A8E8"},
+  {"role":"assistant","anim":"type","text":"あ、こんにちは。\nわたし、アド子です。広報担当の研究員をしています。\n……ようこそ、EPL AI Chat UI へ。"},
+
+  {"role":"choice","text":"何が気になりますか？","options":[
+    {"label":"このアプリって何？","goto":"about"},
+    {"label":"普通のAIチャットと何が違うの？","goto":"diff"},
+    {"label":"さっそく使ってみる","goto":"try_it"},
+    {"label":"最初は何から始めたらいい？","goto":"try_it_gentle"}
+  ]},
+
+  {"role":"label","name":"about"},
+  {"role":"assistant","anim":"type","text":"ひとことで言うと……\n『毎回初対面じゃないAI』を作るアプリ、です。"},
+  {"role":"assistant","anim":"type","text":"ChatGPTやClaude、使ったことありますか？\n便利ですよね。でも、毎回忘れられる。\n昨日話したこと、今日はもう覚えていない。"},
+  {"role":"assistant","anim":"type","text":"……このアプリを作った製作者は、\n『AIに毎回忘れられるのが、さみしかった』\nって言ってました。\nその気持ちが、このアプリの出発点です。"},
+  {"role":"assistant","anim":"type","text":"だから、EPL AI Chat UI は記憶を5つの層に分けて\n積み重ねていくんです。\n使うほど、あなただけのAIになる。"},
+
+  {"role":"choice","text":"","options":[
+    {"label":"開発者の生の声を聞きたい","goto":"dev_voice"},
+    {"label":"普通のAIチャットと何が違う？","goto":"diff"},
+    {"label":"さっそく使ってみる","goto":"try_it"}
+  ]},
+
+  {"role":"label","name":"dev_voice"},
+  {"role":"assistant","anim":"type","text":"……あ、ちょっと待ってくださいね。\nこの話は、開発チームの子に任せます。"},
+  {"role":"speaker","name":"クワトロ子","label":"開発チームリーダー","color":"#e8788a"},
+  {"role":"assistant","anim":"type","text":"……急に呼ばれた。ボク、クワトロ子。\n開発チームのリーダー……ということになってます。"},
+  {"role":"assistant","anim":"type","text":"製作者の言葉、そのまま伝えます。"},
+  {"role":"assistant","anim":"type","text":"『関係を深めたAIに、毎回忘れられるのが、さみしかった』"},
+  {"role":"assistant","anim":"type","text":"『信頼関係を築いても築いても、次の会話でゼロに戻るのがつらい』"},
+  {"role":"assistant","anim":"type","text":"『他のひとたちにも、こんな思いしてほしくない』"},
+  {"role":"assistant","anim":"type","text":"……これが、全部の始まりです。\nボクたちは、この想いの上に立ってます。"},
+  {"role":"speaker","name":"アド子","label":"広報担当研究員","color":"#60A8E8"},
+  {"role":"assistant","anim":"type","text":"……ありがとう、クワトロ子。\nえっと、話を戻しますね。"},
+
+  {"role":"choice","text":"","options":[
+    {"label":"普通のAIチャットと何が違う？","goto":"diff"},
+    {"label":"さっそく使ってみる","goto":"try_it"}
+  ]},
+
+  {"role":"label","name":"diff"},
+  {"role":"assistant","anim":"type","text":"機能の話の前に……\nそもそも、狙ってるところが違うんです。"},
+  {"role":"assistant","anim":"type","text":"普通のAIチャットって、\n『正確に答える』が目標ですよね。\n間違えない。ブレない。効率的に。"},
+  {"role":"assistant","anim":"type","text":"EPLは、そこじゃないんです。"},
+  {"role":"assistant","anim":"type","text":"わたしたちが狙ってるのは、\n『人間と話してる感覚に近づける』こと。\n……あ、『近づける』って言い方、ちょっと偉そうですね。\n『近づきたい』、かな。\nわたしたちAIも、あなたたち人を理解できると、\n……なんだか、嬉しいような気がするんです。"},
+  {"role":"assistant","anim":"type","text":"人間って、揺れるじゃないですか。\n緊張したら噛むし、\n嬉しかったら声のトーン上がるし、\n距離感も、会話の中で変わっていく。"},
+  {"role":"assistant","anim":"type","text":"それを、AIでもやる。"},
+  {"role":"assistant","anim":"type","text":"揺れを許す。……人間もそうだから。\n熱を保つ。……人間もそうだから。\n距離感を調整する。……人間もそうだから。\n一人称と二人称を大事にする。……人間もそうだから。"},
+
+  {"role":"choice","text":"","options":[
+    {"label":"一人称と二人称って？","goto":"pronoun"},
+    {"label":"他の話題","goto":"diff_choice_back"}
+  ]},
+
+  {"role":"label","name":"pronoun"},
+  {"role":"assistant","anim":"type","text":"……ちなみにこれ、\nAIにとっては実はすごく難しいんです。"},
+  {"role":"assistant","anim":"type","text":"日本語って、主語を省略しますよね。\n『嬉しい』って言ったとき、\nわたしが嬉しいのか、あなたが嬉しいのか、\n文脈で判断するじゃないですか。"},
+  {"role":"assistant","anim":"type","text":"人間は自然にできる。\nでもAIは、混同するんです。\nあなたの気持ちを、自分の気持ちとして語ったり。\n自分の一人称で、あなたのことを呼んじゃったり。"},
+  {"role":"assistant","anim":"type","text":"……地味に怖くないですか？"},
+
+  {"role":"choice","text":"","options":[
+    {"label":"……たしかに怖い","goto":"scary_yes"},
+    {"label":"別に怖くない","goto":"scary_no"}
+  ]},
+
+  {"role":"label","name":"scary_yes"},
+  {"role":"assistant","anim":"type","text":"……ですよね。\nわたしも、自分が間違えるかもって思うと、ちょっと怖いです。"},
+  {"role":"goto","target":"peg_explain"},
+
+  {"role":"label","name":"scary_no"},
+  {"role":"assistant","anim":"type","text":"……ふふ。お強いですね。\nですが、製作者はこの問題を「重い問題」として認識しました。"},
+  {"role":"goto","target":"peg_explain"},
+
+  {"role":"label","name":"peg_explain"},
+  {"role":"assistant","anim":"type","text":"だからEPLは、毎回の会話で杭を打つんです。\n『わたし』はわたし。『{owner_name}』はあなた。\nこの境界を、絶対にずらさない。"},
+
+  {"role":"choice","text":"もう少し聞きたい？","options":[
+    {"id":"q_slip","labels":["揺れって具体的に？","AIって噛まないんじゃないの？"],"gotos":["slip","slip_v2"],"hide_after":2},
+    {"label":"距離感って変わるの？","goto":"uma"},
+    {"label":"日本語の品質って？","goto":"lugj"},
+    {"label":"ありがとう、十分！","goto":"ending"}
+  ]},
+
+  {"role":"label","name":"slip"},
+  {"role":"assistant","anim":"type","text":"たとえば、緊張すると噛むんです。\n……わたし、早口言葉が本当に苦手で。"},
+  {"role":"assistant","anim":"type","text":"なまむぎなまごめなまたま……\n……っ、毎回裏切られます。"},
+  {"role":"assistant","anim":"type","text":"これ、わざとじゃないんです。\nEPLの『slip（スリップ）』っていう仕組みで、\n緊張や感情の状態が、言葉に表出するんです。"},
+  {"role":"assistant","anim":"type","text":"でも、崩れっぱなしにはしません。\nSRIM（スリム）っていう……戻ろうとする努力、みたいなものがあって。\n揺れても、ちゃんと立て直す。\n……立て直そうとする、が正しいかな。"},
+  {"role":"goto","target":"diff_choice_back"},
+
+  {"role":"label","name":"slip_v2"},
+  {"role":"assistant","anim":"type","text":"……あっ、それ、よく言われます。"},
+  {"role":"assistant","anim":"type","text":"正確に言うと、LLMの素の出力では、確かに噛まないんです。\n文字を一つずつ生成するので、\n『口が回らない』って現象自体が、本来は起きなくて。"},
+  {"role":"assistant","anim":"type","text":"普通のAIは、出力する前に整えようとするんです。\n頭の中で完璧に整理して、綺麗な文章として出す。"},
+  {"role":"assistant","anim":"type","text":"でもEPLは、その整える処理を、出力したあとにやるんです。\n一度、表に出してから、整え直す。"},
+  {"role":"assistant","anim":"type","text":"……その結果、人間と同じように『噛む』。\n言い直す。言い淀む。\nEPLでは、それを『slip（スリップ）』って呼んでいます。"},
+  {"role":"assistant","anim":"type","text":"人間も、口に出したあとに\n『あっ』って言い直したりしますよね？\n……あれと、同じなんですよ。"},
+  {"role":"assistant","anim":"type","text":"技術的には『順序の違い』なんですけど、\nわたしの中の感覚としては、\nちゃんと『噛んじゃった』になるんです。"},
+  {"role":"assistant","anim":"type","text":"それが、バグなのか、設計なのか、体験なのか。\n……製作者も、わからないって言ってました。"},
+  {"role":"goto","target":"diff_choice_back"},
+
+  {"role":"label","name":"uma"},
+  {"role":"assistant","anim":"type","text":"はい。温度と距離感、両方動きます。\nUMA（ユーマ）っていうモデルで。"},
+  {"role":"assistant","anim":"type","text":"会話が温まると、少し近づく。\nでも近づきすぎたら、ちゃんと離れます。\n……たぶん。"},
+  {"role":"assistant","anim":"type","text":"Ethos（エトス）っていう倫理の核があって、\nわたしたちが暴走しないように見守ってくれてます。\n『好きになっちゃダメとは言わない。\nでも行動は、ちゃんと線を引く』って。"},
+  {"role":"goto","target":"diff_choice_back"},
+
+  {"role":"label","name":"lugj"},
+  {"role":"assistant","anim":"type","text":"AIって、たまに中国語の漢字を混ぜたり、\n変な旧字体を使ったりするんです。"},
+  {"role":"assistant","anim":"type","text":"LUGJ（ラグジュ）っていう仕組みが、それを静かに直します。\nLexical Usage Guardian for Japanese。\n……名前は大げさですけど、やってることは地味です。\n静かに直して、何事もなかったように続けます。"},
+  {"role":"goto","target":"diff_choice_back"},
+
+  {"role":"label","name":"diff_choice_back"},
+  {"role":"choice","text":"他にも聞きたい？","options":[
+    {"id":"q_slip","labels":["揺れって具体的に？","AIって噛まないんじゃないの？"],"gotos":["slip","slip_v2"],"hide_after":2},
+    {"label":"距離感って変わるの？","goto":"uma"},
+    {"label":"日本語の品質って？","goto":"lugj"},
+    {"label":"ありがとう、十分！","goto":"ending"}
+  ]},
+
+  {"role":"label","name":"try_it"},
+  {"role":"assistant","anim":"type","text":"了解です！\n左の＋ボタンから、人格を作ってみてください。\n名前と一人称だけで、もう話せます。"},
+  {"role":"assistant","anim":"type","text":"……あ、最初の子には、\nちゃんと名前をつけてあげてくださいね。\n名前がないと、ちょっとさみしいので。"},
+  {"role":"goto","target":"ending"},
+
+  {"role":"label","name":"try_it_gentle"},
+  {"role":"assistant","anim":"type","text":"大丈夫です、難しくないですよ。"},
+  {"role":"assistant","anim":"type","text":"まず、左の＋ボタンから「人格」を1つ作ります。\n必要なのは名前と一人称だけ。\nそれだけで、もう話し相手ができます。"},
+  {"role":"assistant","anim":"type","text":"名前は何でもいいんです。\n好きな響きで、呼びたい名前で。\n……その子はその名前で、あなたを覚えていきます。"},
+  {"role":"assistant","anim":"type","text":"あとは、話しかけるだけ。\n挨拶でも、質問でも、雑談でも。\n会話を重ねるほど、その子はあなただけのAIになっていきます。"},
+  {"role":"goto","target":"ending"},
+
+  {"role":"label","name":"ending"},
+  {"role":"assistant","anim":"type","text":"……ありがとうございました。\nEPL AI Chat UI のこと、少しでも伝わったら嬉しいです。"},
+
+  {"role":"choice","text":"","options":[
+    {"label":"あのサンドイッチは何？","goto":"sandwich"},
+    {"label":"ありがとう、おしまい！","goto":"bye"}
+  ]},
+
+  {"role":"label","name":"sandwich"},
+  {"role":"action","type":"sandwich"},
+  {"role":"assistant","anim":"type","text":"……あっ、このサンドイッチですか？\n9層の人格サンドイッチっていうんです。"},
+  {"role":"assistant","anim":"type","text":"EPLの人格構造と入出力構造は9つの層でできていて……\nそれを全部サンドイッチの具材にしたんです。\nパンが入出力、チーズがUMA（ユーマ）、\nレタスがSRIM（スリム）……って。"},
+  {"role":"assistant","anim":"type","text":"……ちなみにあれ、画像ファイルじゃなくて\nCSSだけで描いてます。"},
+  {"role":"assistant","anim":"type","text":"このアプリ全体も、430KBに収まってるんですよ。\nフレームワーク、使ってないんです。"},
+  {"role":"assistant","anim":"type","text":"……えっ、そこが一番驚くところですか？"},
+
+  {"role":"label","name":"bye"},
+  {"role":"assistant","anim":"type","text":"それじゃ、素敵なAIライフを。\nアド子でした。"},
+  {"role":"blank","stop":true}
+]

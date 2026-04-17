@@ -1,0 +1,50 @@
+# EPL AI Chat UI Configuration
+# このファイルを config.yaml にコピーして使用してください。
+# cp config.yaml.example config.yaml
+
+engine:
+  # active: claude | openai
+  active: claude
+
+  claude:
+    api_key: ""  # 環境変数 ANTHROPIC_API_KEY or UIから設定 or ここに直接記入
+    # api_key_file: "/path/to/apikey.txt"  # ファイルから読み込む場合
+    model: "claude-sonnet-4-6"
+
+  openai:
+    api_key: ""
+    model: "gpt-4o"
+
+  gemini:
+    api_key: ""  # 環境変数 GOOGLE_API_KEY or UIから設定 or ここに直接記入
+    model: "gemini-2.5-flash"
+
+epl:
+  core_path: "data/epl_cores/first_epero_core_v1.5.epl"
+
+memory:
+  db_path: "data/db/epel.db"
+  instant_memory_max_tokens: 2000
+  novelty_decay_rate: 0.95
+  trash_retention_days: 15
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+
+# ========== 認証設定 ==========
+auth:
+  # false = ローカル開発モード（ログイン不要）
+  # true  = Google SSOを有効化
+  enabled: false
+
+  google_client_id: ""
+  google_client_secret: ""
+  base_url: "http://localhost:8000"
+
+  # JWT署名キー（python -c "import secrets; print(secrets.token_hex(32))" で生成）
+  jwt_secret: ""
+
+  # 招待するGmailアドレスのリスト（空の場合は全員許可）
+  allowed_emails: []
+  #  - "example@gmail.com"
