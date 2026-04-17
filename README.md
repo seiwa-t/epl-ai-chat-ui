@@ -53,6 +53,7 @@ chmod +x setup_and_start.command
   - Anthropic（Claude）: [console.anthropic.com](https://console.anthropic.com/)
   - OpenAI（GPT）: [platform.openai.com](https://platform.openai.com/)
   - Google（Gemini）: [aistudio.google.com](https://aistudio.google.com/)
+  - OpenRouter（Grok / DeepSeek / Llama など多数）: [openrouter.ai](https://openrouter.ai/keys)
 
 API キーは起動後の画面から設定できます。
 

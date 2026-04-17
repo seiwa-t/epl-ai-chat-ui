@@ -53,6 +53,7 @@ For subsequent launches, use `start.bat` (Windows) or `./start.command` (Mac).
   - Anthropic (Claude): [console.anthropic.com](https://console.anthropic.com/)
   - OpenAI (GPT): [platform.openai.com](https://platform.openai.com/)
   - Google (Gemini): [aistudio.google.com](https://aistudio.google.com/)
+  - OpenRouter (Grok / DeepSeek / Llama and many more): [openrouter.ai](https://openrouter.ai/keys)
 
 API keys can be configured from the app's settings screen after launch.
 
