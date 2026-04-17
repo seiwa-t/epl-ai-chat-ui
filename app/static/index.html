@@ -6,7 +6,7 @@
   <title>EPL AI Chat UI</title>
   <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/static/favicon_sandwich.png" type="image/png">
-  <link rel="stylesheet" href="/static/css/style.css?v=20260418a07">
+  <link rel="stylesheet" href="/static/css/style.css?v=20260418a08">
 </head>
 
 <body>
@@ -551,7 +551,7 @@
                 <label class="form_label" for="init_name">
                   <span data-i18n="init_name">名前</span> <span class="required_mark">*</span> <span class="char_count" id="cc_init_name"></span>
                 </label>
-                <input class="form_input" type="text" id="init_name" maxlength="15" placeholder="例：アド子" data-i18n-ph="init_name_ph" />
+                <input class="form_input" type="text" autocomplete="off" id="init_name" maxlength="15" placeholder="例：アド子" data-i18n-ph="init_name_ph" />
               </div>
               <!-- fld_006: 役割（ロール） -->
               <div class="form_row" id="init_row_role">
@@ -571,7 +571,7 @@
                   <option value="司会" data-i18n="init_role_facilitator">司会</option>
                   <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
                 </select>
-                <input class="form_input" type="text" id="init_role" maxlength="50" placeholder="例：シゴデキ広報担当" data-i18n-ph="init_role_custom_ph" style="display:none; margin-top:6px;" />
+                <input class="form_input" type="text" autocomplete="off" id="init_role" maxlength="50" placeholder="例：シゴデキ広報担当" data-i18n-ph="init_role_custom_ph" style="display:none; margin-top:6px;" />
                 <div class="init_role_note" style="font-size:0.7rem;opacity:0.5;margin-top:4px;" data-i18n="init_role_note">※ 強い役割づけは、アクターで与えるのがおすすめです</div>
               </div>
               <!-- fld_007: 名前の横に役割を表示する -->
@@ -596,7 +596,7 @@
                   <option value="ウチ">ウチ</option>
                   <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
                 </select>
-                <input class="form_input" type="text" id="init_pronoun" maxlength="50" placeholder="例：吾輩、ワシ" data-i18n-ph="init_pronoun_custom_ph" style="display:none; margin-top:6px;" />
+                <input class="form_input" type="text" autocomplete="off" id="init_pronoun" maxlength="50" placeholder="例：吾輩、ワシ" data-i18n-ph="init_pronoun_custom_ph" style="display:none; margin-top:6px;" />
               </div>
               <!-- fld_004: 性別 -->
               <div class="form_row" id="init_row_gender">
@@ -609,7 +609,7 @@
                   <option value="unknown" data-i18n="init_gender_unknown">不明</option>
                   <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
                 </select>
-                <input class="form_input" type="text" id="init_gender_custom" placeholder="男の娘、etc." data-i18n-ph="init_gender_custom_ph" style="display:none; margin-top:6px;" />
+                <input class="form_input" type="text" autocomplete="off" id="init_gender_custom" placeholder="男の娘、etc." data-i18n-ph="init_gender_custom_ph" style="display:none; margin-top:6px;" />
               </div>
               <!-- fld_005: オーナーの呼び方 -->
               <div class="form_row" id="init_row_owner_call">
@@ -623,21 +623,21 @@
                 <label class="form_label" for="init_role_detail">
                   <span data-i18n="init_role_detail">役回りの補足</span> <span class="char_count" id="cc_init_role_detail"></span>
                 </label>
-                <input class="form_input" type="text" id="init_role_detail" maxlength="200" placeholder="例：優しく整理する秘書役" data-i18n-ph="init_role_detail_ph" />
+                <input class="form_input" type="text" autocomplete="off" id="init_role_detail" maxlength="200" placeholder="例：優しく整理する秘書役" data-i18n-ph="init_role_detail_ph" />
               </div>
               <!-- fld_013: 得意なこと（モード時タブ1用） -->
               <div class="form_row" id="init_row_specialty">
                 <label class="form_label" for="init_specialty">
                   <span data-i18n="init_specialty">特技・スキル</span> <span class="char_count" id="cc_init_specialty"></span>
                 </label>
-                <input class="form_input" type="text" id="init_specialty" maxlength="100" placeholder="例：整理、相談、励まし、レビュー" data-i18n-ph="init_specialty_ph" />
+                <input class="form_input" type="text" autocomplete="off" id="init_specialty" maxlength="100" placeholder="例：整理、相談、励まし、レビュー" data-i18n-ph="init_specialty_ph" />
               </div>
               <!-- fld_014: 大事にしていること（モード時タブ1用） -->
               <div class="form_row" id="init_row_core_message">
                 <label class="form_label" for="init_extra">
                   <span data-i18n="init_core_message">大事にしていること</span> <span class="char_count" id="cc_init_extra"></span>
                 </label>
-                <input class="form_input" type="text" id="init_extra" maxlength="100" placeholder="信条、こだわり、この子らしさのメモ" data-i18n-ph="init_core_message_ph" />
+                <input class="form_input" type="text" autocomplete="off" id="init_extra" maxlength="100" placeholder="信条、こだわり、この子らしさのメモ" data-i18n-ph="init_core_message_ph" />
               </div>
             </div>
             <!-- タブ2: 個性 -->
@@ -647,21 +647,21 @@
                 <label class="form_label" for="init_reason">
                   <span data-i18n="init_reason">名前の由来</span> <span class="char_count" id="cc_init_reason"></span>
                 </label>
-                <input class="form_input" type="text" id="init_reason" maxlength="100" placeholder="この名前にした理由や由来を書く" data-i18n-ph="init_reason_ph" />
+                <input class="form_input" type="text" autocomplete="off" id="init_reason" maxlength="100" placeholder="この名前にした理由や由来を書く" data-i18n-ph="init_reason_ph" />
               </div>
               <!-- fld_009: 性格 -->
               <div class="form_row" id="init_row_traits">
                 <label class="form_label" for="init_traits">
                   <span data-i18n="init_traits">性格</span> <span class="char_count" id="cc_init_traits"></span>
                 </label>
-                <input class="form_input" type="text" id="init_traits" maxlength="100" placeholder="例：優しい、落ち着いている、まじめ" data-i18n-ph="init_traits_ph" />
+                <input class="form_input" type="text" autocomplete="off" id="init_traits" maxlength="100" placeholder="例：優しい、落ち着いている、まじめ" data-i18n-ph="init_traits_ph" />
               </div>
               <!-- fld_010: 外見 -->
               <div class="form_row" id="init_row_appearance">
                 <label class="form_label" for="init_appearance">
                   <span data-i18n="init_appearance">外見</span> <span class="char_count" id="cc_init_appearance"></span>
                 </label>
-                <input class="form_input" type="text" id="init_appearance" maxlength="100" placeholder="例：知的で落ち着いた雰囲気" data-i18n-ph="init_appearance_ph" />
+                <input class="form_input" type="text" autocomplete="off" id="init_appearance" maxlength="100" placeholder="例：知的で落ち着いた雰囲気" data-i18n-ph="init_appearance_ph" />
               </div>
               <!-- fld_011: 口調 -->
               <div class="form_row" id="init_row_tone">
@@ -682,7 +682,7 @@
                   <option value="genki" data-i18n="init_tone_genki">元気め</option>
                   <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
                 </select>
-                <input class="form_input" type="text" id="init_tone_custom" maxlength="100" placeholder="例：後輩ポライト風だけど少しツンデレ" data-i18n-ph="init_tone_custom_ph" style="display:none; margin-top:6px;" />
+                <input class="form_input" type="text" autocomplete="off" id="init_tone_custom" maxlength="100" placeholder="例：後輩ポライト風だけど少しツンデレ" data-i18n-ph="init_tone_custom_ph" style="display:none; margin-top:6px;" />
                 <span class="char_count" id="cc_init_tone_custom" style="font-size:0.7rem;"></span>
               </div>
               <!-- fld_012: 語尾の特徴 -->
@@ -700,7 +700,7 @@
                   <option value="少し照れ隠し寄り" data-i18n="init_ending_shy">少し照れ隠し寄り</option>
                   <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
                 </select>
-                <input class="form_input" type="text" id="init_ending_style" maxlength="100" placeholder="例：〜なのだ / 〜じゃん" data-i18n-ph="init_ending_custom_ph" style="display:none; margin-top:6px;" />
+                <input class="form_input" type="text" autocomplete="off" id="init_ending_style" maxlength="100" placeholder="例：〜なのだ / 〜じゃん" data-i18n-ph="init_ending_custom_ph" style="display:none; margin-top:6px;" />
               </div>
             </div>
             <!-- タブ3: 詳細 -->
@@ -719,7 +719,7 @@
                   <option value="robot" data-i18n="init_species_robot">ロボット</option>
                   <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
                 </select>
-                <input class="form_input" type="text" id="init_species_custom" placeholder="ドラゴン、妖精、etc." data-i18n-ph="init_species_custom_ph" style="display:none; margin-top:6px;" />
+                <input class="form_input" type="text" autocomplete="off" id="init_species_custom" placeholder="ドラゴン、妖精、etc." data-i18n-ph="init_species_custom_ph" style="display:none; margin-top:6px;" />
               </div>
               <!-- etc_003: 経験・記憶の持ち帰り条件（アクター専用） -->
               <div class="form_row" id="init_row_carryback" style="display:none;">
@@ -734,7 +734,7 @@
                     <label class="init_carryback_radio"><input type="radio" name="init_carryback_level" value="5" /><span>5</span><span class="init_carryback_hint" data-i18n="init_carryback_high">高</span></label>
                   </div>
                 </div>
-                <input class="form_input" type="text" id="init_carryback_note" maxlength="200" placeholder="その他条件（例：結論だけ持ち帰る）" data-i18n-ph="init_carryback_ph" style="margin-top:6px;" />
+                <input class="form_input" type="text" autocomplete="off" id="init_carryback_note" maxlength="200" placeholder="その他条件（例：結論だけ持ち帰る）" data-i18n-ph="init_carryback_ph" style="margin-top:6px;" />
               </div>
               <!-- fld_016: 背景メモ -->
               <div class="form_row" id="init_row_background">
@@ -785,7 +785,7 @@
                   <option value="沖縄弁">沖縄弁</option>
                   <option value="_other" data-i18n="init_gender_other">その他（自由入力）</option>
                 </select>
-                <input class="form_input" type="text" id="init_base_lang_custom" maxlength="50" placeholder="例：広東語、ラテン語" data-i18n-ph="init_base_lang_custom_ph" style="display:none; margin-top:6px;" />
+                <input class="form_input" type="text" autocomplete="off" id="init_base_lang_custom" maxlength="50" placeholder="例：広東語、ラテン語" data-i18n-ph="init_base_lang_custom_ph" style="display:none; margin-top:6px;" />
                 <div style="font-size:0.7rem;opacity:0.5;margin-top:4px;" data-i18n="init_base_lang_note">※この人格・アクターの思考のベース言語（実験的）</div>
               </div>
             </div>
@@ -927,7 +927,7 @@
   <!-- ② Cerebellum Toast -->
   <div class="cerebellum_toast" id="cerebellum_toast"></div>
 
-  <script src="/static/js/i18n.js?v=20260418a07"></script>
-  <script src="/static/js/script.js?v=20260418a07"></script>
+  <script src="/static/js/i18n.js?v=20260418a08"></script>
+  <script src="/static/js/script.js?v=20260418a08"></script>
 </body>
 </html>
