@@ -5,7 +5,7 @@ English | [日本語](README.md)
 **Give AI a soul.**
 
 Entrust your soul to AI — EPL AI Chat UI gives AI a 5-layer memory structure and personality.
-It remembers everything ChatGPT forgets. Switch engines, keep the heart.
+What Claude forgets, what GPT forgets, what Gemini forgets — we remember. Switch engines, keep the heart.
 
 ---
 
