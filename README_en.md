@@ -195,7 +195,7 @@ The more you use it, the more it becomes yours alone. That is the design philoso
 > Aim for purpose 1 alone.
 > Purposes 2 and 3 are possibilities that may open on their own.
 
---- Toyama Seiwa, EPL-AI Lab Founding Message
+--- Seiwa Toyama, EPL-AI Lab Founding Message
 
 ---
 
@@ -247,9 +247,9 @@ EPL-AI Lab
 
 ## License
 
-**Copyright (c) 2026 Toyama Seiwa / Stampp Corp. All Rights Reserved.**
+**Copyright (c) 2026 Seiwa Toyama / Stampp Corp. All Rights Reserved.**
 
-All source code and documentation are the intellectual property of Toyama Seiwa / Stampp Corp.
+All source code and documentation are the intellectual property of Seiwa Toyama / Stampp Corp.
 
 ### Permitted Use
 
