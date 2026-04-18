@@ -247,9 +247,9 @@ EPL-AI Lab
 
 ## License
 
-**Copyright (c) 2026 Toyama Seiwa / STAMPP Inc. All Rights Reserved.**
+**Copyright (c) 2026 Toyama Seiwa / Stampp Corp. All Rights Reserved.**
 
-All source code and documentation are the intellectual property of Toyama Seiwa / STAMPP Inc.
+All source code and documentation are the intellectual property of Toyama Seiwa / Stampp Corp.
 
 ### Permitted Use
 
